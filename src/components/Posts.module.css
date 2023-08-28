@@ -1,0 +1,47 @@
+.inputQuery{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputQuery label{
+  display: block;
+  align-items: center;
+  margin: 0 0 10px 0;
+  font-weight: bold;
+
+}
+
+.inputQuery input{
+  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.action button{
+  margin-right: 5px;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  background-color: blueviolet;
+}
+
+.action button:hover{
+  background-color: rgb(124, 22, 218);
+  color: white;
+}
+
+.list{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.listItem{
+  margin-bottom: 5px;
+  border: 1px solid black;
+  padding: 5px;
+  border-radius: 10px;
+}
