@@ -1,18 +1,15 @@
-import React, { Fragment, useEffect, useState } from "react";
-import Card from "../ui/Card";
+import React, { Fragment, useEffect, useRef, useState } from "react";
+
+import { Button, Card } from "../ui";
 import classes from "./Posts.module.css";
 import PostsData from "./PostsData";
 
 const Posts = () => {
-  const [inputData, setInputData] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [showAll, setShowAll] = useState(true);
   const [postData, setPostData] = useState(null);
-
-  const inputChangeHandler = (e) => {
-    setInputData(e.target.value);
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,33 +27,38 @@ const Posts = () => {
     }
   }, []);
 
-  const filteredDataHandler = (e) => {
+  const searchHandler = (e) => {
     setShowAll(false);
+    setPostData(null);
     const filteredData = posts.filter(
-      (post) => post.title.toLowerCase().indexOf(inputData.toLowerCase()) >= 0
+      (post) => post.title.toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0
     );
 
     setFilteredPosts(filteredData);
   };
-  
-  const showDataHandler = (post) => {
-    setPostData(post);
+
+  let filteredPostList = <p>No search results.</p>;
+  if (filteredPosts.length > 0) {
+    filteredPostList = filteredPosts.map((post) => (
+      <li
+        key={post.id}
+        className={classes.listItem}
+        onClick={() => setPostData(post)}
+      >
+        {post.title}
+      </li>
+    ));
   }
 
-  let filteredItemList = <p>No search results.</p>
-  if(filteredPosts.length > 0){
-    filteredItemList = filteredPosts.map(post => (
-      <li key={post.id} className={classes.listItem} onClick={() => showDataHandler(post)} >
-        {post.title}
-      </li>
-    ))
-  }
-  const filteredPostList = posts.map((post) => (
-    <li key={post.id} className={classes.listItem} onClick={() => showDataHandler(post)} >
-        {post.title}
-      </li>
-  ))
-  
+  const postList = posts.map((post) => (
+    <li
+      key={post.id}
+      className={classes.listItem}
+      onClick={() => setPostData(post)}
+    >
+      {post.title}
+    </li>
+  ));
 
   return (
     <Fragment>
@@ -65,19 +67,20 @@ const Posts = () => {
           <label htmlFor="searchQuery">Enter Title: </label>
           <input
             id="searchQuery"
-            value={inputData}
-            onChange={inputChangeHandler}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           <div className={classes.action}>
-            <button onClick={filteredDataHandler}>Search</button>
-            <button onClick={() => setShowAll(true)}>Show All</button>
+            <Button onClick={searchHandler}>Search</Button>
           </div>
         </div>
       </Card>
       <Card>
-        {!postData && <ul className={classes.list}>
-          {!showAll ? filteredItemList : filteredPostList}
-        </ul>}
+        {!postData && (
+          <ul className={classes.list}>
+            {!showAll ? filteredPostList : postList}
+          </ul>
+        )}
         {postData && <PostsData post={postData} onGoBack={setPostData} />}
       </Card>
     </Fragment>

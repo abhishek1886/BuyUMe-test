@@ -1,15 +1,18 @@
 import React from "react";
 import classes from "./PostsData.module.css";
+import { Button } from "../ui";
 
 const PostsData = (props) => {
   const { post } = props;
 
   return (
-    <div className={classes.postData}>
-      <button onClick={() => props.onGoBack(null)}>Go Back</button>
-      <h2>{post.title}</h2>
-      <p>{post.body}</p>
-    </div>
+    <>
+      <Button onClick={() => props.onGoBack(null)}>Go Back</Button>
+      <div className={classes.postData}>
+        <h2>{post.title}</h2>
+        <p>{post.body}</p>
+      </div>
+    </>
   );
 };
 
